@@ -371,8 +371,7 @@ impl SourceFileFetcher {
           return Err(e.into());
         }
       };
-      return self
-        .fetch_cached_remote_source(&redirect_url, redirect_limit - 1);
+      return self.fetch_cached_remote_source(&redirect_url, redirect_limit - 1);
     }
 
     let mut source_code = Vec::new();

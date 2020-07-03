@@ -499,7 +499,7 @@ async fn doc_command(
         String::from_utf8(source_file.source_code)
           .map_err(|_| OpError::other("failed to parse".to_string()))
       }
-      .boxed_local()
+        .boxed_local()
     }
   }
 

@@ -57,7 +57,7 @@ fn op_compile(
 
     fut.await
   }
-  .boxed_local();
+    .boxed_local();
   Ok(JsonOp::Async(fut))
 }
 
@@ -81,6 +81,6 @@ fn op_transpile(
     runtime_transpile(global_state, permissions, &args.sources, &args.options)
       .await
   }
-  .boxed_local();
+    .boxed_local();
   Ok(JsonOp::Async(fut))
 }

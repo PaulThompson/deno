@@ -341,7 +341,7 @@ impl ModuleLoader for State {
         )
         .await
     }
-    .boxed_local()
+      .boxed_local()
   }
 }
 

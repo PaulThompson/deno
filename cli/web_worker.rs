@@ -289,36 +289,38 @@ mod tests {
 
     let mut handle = handle_receiver.recv().unwrap();
 
-    tokio_util::run_basic(async move {
-      let msg = json!("hi").to_string().into_boxed_str().into_boxed_bytes();
-      let r = handle.post_message(msg.clone());
-      assert!(r.is_ok());
+    tokio_util::run_basic(
+      async move {
+        let msg = json!("hi").to_string().into_boxed_str().into_boxed_bytes();
+        let r = handle.post_message(msg.clone());
+        assert!(r.is_ok());
 
-      let maybe_msg = handle.get_event().await.unwrap();
-      assert!(maybe_msg.is_some());
+        let maybe_msg = handle.get_event().await.unwrap();
+        assert!(maybe_msg.is_some());
 
-      let r = handle.post_message(msg.clone());
-      assert!(r.is_ok());
+        let r = handle.post_message(msg.clone());
+        assert!(r.is_ok());
 
-      let maybe_msg = handle.get_event().await.unwrap();
-      assert!(maybe_msg.is_some());
-      match maybe_msg {
-        Some(WorkerEvent::Message(buf)) => {
-          assert_eq!(*buf, *b"[1,2,3]");
+        let maybe_msg = handle.get_event().await.unwrap();
+        assert!(maybe_msg.is_some());
+        match maybe_msg {
+          Some(WorkerEvent::Message(buf)) => {
+            assert_eq!(*buf, *b"[1,2,3]");
+          }
+          _ => unreachable!(),
         }
-        _ => unreachable!(),
-      }
 
-      let msg = json!("exit")
-        .to_string()
-        .into_boxed_str()
-        .into_boxed_bytes();
-      let r = handle.post_message(msg);
-      assert!(r.is_ok());
-      let event = handle.get_event().await.unwrap();
-      assert!(event.is_none());
-      handle.sender.close_channel();
-    });
+        let msg = json!("exit")
+          .to_string()
+          .into_boxed_str()
+          .into_boxed_bytes();
+        let r = handle.post_message(msg);
+        assert!(r.is_ok());
+        let event = handle.get_event().await.unwrap();
+        assert!(event.is_none());
+        handle.sender.close_channel();
+      },
+    );
     join_handle.join().expect("Failed to join worker thread");
   }
 
@@ -338,14 +340,16 @@ mod tests {
 
     let mut handle = handle_receiver.recv().unwrap();
 
-    tokio_util::run_basic(async move {
-      let msg = json!("hi").to_string().into_boxed_str().into_boxed_bytes();
-      let r = handle.post_message(msg.clone());
-      assert!(r.is_ok());
-      let event = handle.get_event().await.unwrap();
-      assert!(event.is_none());
-      handle.sender.close_channel();
-    });
+    tokio_util::run_basic(
+      async move {
+        let msg = json!("hi").to_string().into_boxed_str().into_boxed_bytes();
+        let r = handle.post_message(msg.clone());
+        assert!(r.is_ok());
+        let event = handle.get_event().await.unwrap();
+        assert!(event.is_none());
+        handle.sender.close_channel();
+      },
+    );
     join_handle.join().expect("Failed to join worker thread");
   }
 }

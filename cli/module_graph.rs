@@ -425,7 +425,7 @@ impl ModuleGraphLoader {
 
       Ok((spec_.clone(), source_file))
     }
-    .boxed_local();
+      .boxed_local();
 
     self.pending_downloads.push(load_future);
     Ok(())

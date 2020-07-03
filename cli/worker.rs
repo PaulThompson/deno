@@ -345,17 +345,19 @@ mod tests {
       State::new(global_state, None, module_specifier.clone(), None, false)
         .unwrap();
     let state_ = state.clone();
-    tokio_util::run_basic(async move {
-      let mut worker =
-        MainWorker::new("TEST".to_string(), StartupData::None, state);
-      let result = worker.execute_module(&module_specifier).await;
-      if let Err(err) = result {
-        eprintln!("execute_mod err {:?}", err);
-      }
-      if let Err(e) = (&mut *worker).await {
-        panic!("Future got unexpected error: {:?}", e);
-      }
-    });
+    tokio_util::run_basic(
+      async move {
+        let mut worker =
+          MainWorker::new("TEST".to_string(), StartupData::None, state);
+        let result = worker.execute_module(&module_specifier).await;
+        if let Err(err) = result {
+          eprintln!("execute_mod err {:?}", err);
+        }
+        if let Err(e) = (&mut *worker).await {
+          panic!("Future got unexpected error: {:?}", e);
+        }
+      },
+    );
     let state = state_.borrow();
     assert_eq!(state.metrics.resolve_count, 2);
     // Check that we didn't start the compiler.
@@ -375,17 +377,19 @@ mod tests {
       State::new(global_state, None, module_specifier.clone(), None, false)
         .unwrap();
     let state_ = state.clone();
-    tokio_util::run_basic(async move {
-      let mut worker =
-        MainWorker::new("TEST".to_string(), StartupData::None, state);
-      let result = worker.execute_module(&module_specifier).await;
-      if let Err(err) = result {
-        eprintln!("execute_mod err {:?}", err);
-      }
-      if let Err(e) = (&mut *worker).await {
-        panic!("Future got unexpected error: {:?}", e);
-      }
-    });
+    tokio_util::run_basic(
+      async move {
+        let mut worker =
+          MainWorker::new("TEST".to_string(), StartupData::None, state);
+        let result = worker.execute_module(&module_specifier).await;
+        if let Err(err) = result {
+          eprintln!("execute_mod err {:?}", err);
+        }
+        if let Err(e) = (&mut *worker).await {
+          panic!("Future got unexpected error: {:?}", e);
+        }
+      },
+    );
 
     let state = state_.borrow();
     // Check that we didn't start the compiler.

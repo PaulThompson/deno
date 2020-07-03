@@ -176,10 +176,12 @@ async fn server(
             let g = inspector_map_.lock().unwrap();
             g.get(&uuid).map(|info| info.new_websocket_tx.clone()).map(
               |new_websocket_tx| {
-                ws.on_upgrade(move |websocket| async move {
-                  let (proxy, pump) = create_websocket_proxy(websocket);
-                  let _ = new_websocket_tx.unbounded_send(proxy);
-                  pump.await;
+                ws.on_upgrade(move |websocket| {
+                  async move {
+                    let (proxy, pump) = create_websocket_proxy(websocket);
+                    let _ = new_websocket_tx.unbounded_send(proxy);
+                    pump.await;
+                  }
                 })
               },
             )
@@ -742,7 +744,7 @@ impl DenoInspectorSession {
         Err(err) => eprintln!("Debugger session ended: {}.", err),
       };
     }
-    .boxed_local()
+      .boxed_local()
   }
 
   fn send_to_websocket(&self, msg: v8::UniquePtr<v8::inspector::StringBuffer>) {

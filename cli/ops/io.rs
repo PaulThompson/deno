@@ -402,7 +402,7 @@ pub fn op_write(
 
         Ok(nwritten as i32)
       }
-      .boxed_local(),
+        .boxed_local(),
     )
   }
 }

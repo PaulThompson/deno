@@ -840,7 +840,7 @@ mod tests {
         ])
       );
     }
-    .boxed_local();
+      .boxed_local();
 
     futures::executor::block_on(fut);
   }
@@ -901,7 +901,7 @@ mod tests {
         Some(redirect3_id)
       );
     }
-    .boxed_local();
+      .boxed_local();
 
     futures::executor::block_on(fut);
   }
